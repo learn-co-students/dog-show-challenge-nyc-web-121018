@@ -9,7 +9,7 @@ fetch(dogsURL)
 .then(dogData => {
   let dogHTML = dogData.map(dog =>{
     return `
-    <tr><td>${dog.name}</td> <td>${dog.breed}</td> <td>${dog.sex}</td> <td><button class="edit" data-id=${dog.id}>Edit</button></td></tr>
+    <tr><td>${dog.name}</td> <td>${dog.breed}</td> <td>${dog.sex}</td> <td><button class="edit" data-id=${dog.id}>Edit</button></td> <td><button class="delete" data-id=${dog.id}>Delete</button></td></tr>
     `
   })//end map
   dogTable.innerHTML = dogHTML.join("")
@@ -36,7 +36,34 @@ dogTable.addEventListener("click", (e)=>{
     editForm.children[1].value = targetBreed
     editForm.children[2].value = targetSex
   }//end if statement
-})//end addEventListener
+  else if(e.target.className === "delete"){
+    //console.log(e.target);
+    let deletedId = e.target.dataset.id
+    console.log(deletedId);
+    fetch(`http://localhost:3000/dogs/${deletedId}`,{
+    method: "DELETE",
+    headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+          })
+  })
+  .then(r => r.json())
+  .then(dogData =>{
+    fetch(dogsURL)
+      .then(r => r.json())
+      .then(dogData => {
+      let dogHTML = dogData.map(dog =>{
+        return `
+        <tr><td>${dog.name}</td> <td>${dog.breed}</td> <td>${dog.sex}</td> <td><button class="edit" data-id=${dog.id}>Edit</button></td><td><button class="delete" data-id=${dog.id}>Delete</button></td></tr>
+        `
+    })//end map
+    dogTable.innerHTML = dogHTML.join("")
+    })//end then
+
+  })//end of else if
+}//end addEventListener
 
 editDog.addEventListener("submit", (e)=>{
 e.preventDefault()
@@ -64,7 +91,7 @@ e.preventDefault()
       .then(dogData => {
       let dogHTML = dogData.map(dog =>{
         return `
-        <tr><td>${dog.name}</td> <td>${dog.breed}</td> <td>${dog.sex}</td> <td><button class="edit" data-id=${dog.id}>Edit</button></td></tr>
+        <tr><td>${dog.name}</td> <td>${dog.breed}</td> <td>${dog.sex}</td> <td><button class="edit" data-id=${dog.id}>Edit</button></td><td><button class="delete" data-id=${dog.id}>Delete</button></td></tr>
         `
     })//end map
     dogTable.innerHTML = dogHTML.join("")
@@ -73,5 +100,7 @@ e.preventDefault()
   })
 
 })//end addEventListener
+
+})
 
 })//end Domcontent loaded

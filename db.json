@@ -1,18 +1,6 @@
 {
   "dogs": [
     {
-      "id": 1,
-      "name": "Babbbbie",
-      "breed": "Scottish Deerhound",
-      "sex": "female"
-    },
-    {
-      "id": 2,
-      "name": "Teddy",
-      "breed": "Rhodesian Ridgeback",
-      "sex": "male"
-    },
-    {
       "id": 3,
       "name": "Snickers",
       "breed": "Dachshund",
